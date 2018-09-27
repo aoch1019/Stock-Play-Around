@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import StockTable from './StockTable';
-import SelectedStocks from './SelectedStocks';
 import './stylesheets/App.css';
 // import './CSVCrunch/StockList'
 
@@ -22,11 +21,21 @@ this.removeStock = this.removeStock.bind(this)
 
   componentDidMount(){
     fetch(`http://localhost:3000/stocks`).then(
-      res => res.json()).then(data => {
-        this.setState({
-          allStocks: data
-        })
+      res => res.json())
+      .then(data => {
+        this.addCurrPrice(data)
       })
+  }
+
+  addCurrPrice(stocksData){
+    return stocksData.map(stock => {
+      return fetch(`https://api.iextrading.com/1.0/stock/${stock.symbol}/book`).then(
+        res => res.json()).then(info => {
+          this.setState(prevState => ({
+            allStocks: [...prevState.allStocks, {...stock, price: info.quote.latestPrice}]
+          }))
+        })
+    })
   }
 
   selectStock(stock){
@@ -55,8 +64,8 @@ this.removeStock = this.removeStock.bind(this)
         <p className="App-intro">
           Please create your own ETF with the following stocks:
         </p>
-      < SelectedStocks selected={this.state.selectedStocks} handleClick={this.removeStock}/>
-      < StockTable stockList={this.unselectedStocks()} handleClick={this.selectStock}/>
+      < StockTable stockList={this.state.selectedStocks} handleClick={this.removeStock} button={"remove"} />
+      < StockTable stockList={this.unselectedStocks()} handleClick={this.selectStock} button={"add"} />
       </div>
     );
   }
