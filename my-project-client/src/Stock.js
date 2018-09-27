@@ -7,10 +7,9 @@ export default class Stock extends Component{
   }
 
   componentDidMount(){
-    let URL = `https://api.iextrading.com/1.0/stock/${this.props.data["Symbol"]}/book`
+    let URL = `https://api.iextrading.com/1.0/stock/${this.props.data.symbol}/book`
     fetch(URL).then(
       res => res.json()).then(data => {
-        console.log(data)
         this.setState({
           currPrice: data.quote.latestPrice
         })
@@ -20,8 +19,8 @@ export default class Stock extends Component{
   render(){
     return(
       <tr>
-        <td>{this.props.data["Name"].replace(/"/g, '')}</td>
-        <td>{this.props.data["Symbol"]}</td>
+        <td>{this.props.data.name.replace(/"/g, '')}</td>
+        <td>{this.props.data.symbol}</td>
         <td>${this.state.currPrice}</td>
       </tr>
     )

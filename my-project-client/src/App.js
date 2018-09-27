@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import StockTable from './StockTable';
 import './stylesheets/App.css';
-import stockObj from './StockObj'
 // import './CSVCrunch/StockList'
 
 class App extends Component {
@@ -10,9 +9,12 @@ class App extends Component {
   }
 
   componentDidMount(){
-    this.setState({
-      allStocks: stockObj
-    })
+    fetch(`http://localhost:3000/stocks`).then(
+      res => res.json()).then(data => {
+        this.setState({
+          allStocks: data
+        })
+      })
   }
 
   render() {
