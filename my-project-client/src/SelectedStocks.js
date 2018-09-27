@@ -24,13 +24,13 @@ const StockTable = (props) => {
                 </th>
                 <th>
                   <h3 className="ui center aligned header">
-                    Add
+                    Remove
                   </h3>
                 </th>
               </tr>
 
-              {props.stockList.map(function(stockInfo, idx){
-                return < Stock key={idx} stockInfo={stockInfo} handleClick={props.handleClick} button={"add"} />
+              {props.selected.map(function(stockInfo, idx){
+                return < Stock key={idx} stockInfo={stockInfo} handleClick={props.handleClick} button={"remove"} />
               })}
 
             </tbody>

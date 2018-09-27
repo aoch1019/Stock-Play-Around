@@ -1,12 +1,24 @@
 import React, { Component } from 'react';
 import StockTable from './StockTable';
+import SelectedStocks from './SelectedStocks';
 import './stylesheets/App.css';
 // import './CSVCrunch/StockList'
 
 class App extends Component {
-  state = {
-    allStocks: []
+
+constructor(props){
+  super(props)
+
+  this.state = {
+    allStocks: [],
+    selectedStocks: []
   }
+
+this.selectStock = this.selectStock.bind(this)
+this.removeStock = this.removeStock.bind(this)
+
+}
+
 
   componentDidMount(){
     fetch(`http://localhost:3000/stocks`).then(
@@ -15,6 +27,22 @@ class App extends Component {
           allStocks: data
         })
       })
+  }
+
+  selectStock(stock){
+    this.setState(prevState => ({
+      selectedStocks: [...prevState.selectedStocks, stock]
+    }))
+  }
+
+  removeStock(stock){
+    this.setState(prevState => ({
+      selectedStocks: prevState.selectedStocks.filter(elem => elem !== stock)
+    }), () => console.log(this.state.selectedStocks))
+  }
+
+  unselectedStocks(){
+    return this.state.allStocks.filter(stock => !this.state.selectedStocks.includes(stock))
   }
 
   render() {
@@ -27,7 +55,8 @@ class App extends Component {
         <p className="App-intro">
           Please create your own ETF with the following stocks:
         </p>
-        < StockTable stockList={this.state.allStocks} />
+      < SelectedStocks selected={this.state.selectedStocks} handleClick={this.removeStock}/>
+      < StockTable stockList={this.unselectedStocks()} handleClick={this.selectStock}/>
       </div>
     );
   }
