@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import StockTable from './StockTable';
 import './stylesheets/App.css';
 import stockObj from './StockObj'
+// import './CSVCrunch/StockList'
 
 class App extends Component {
   state = {

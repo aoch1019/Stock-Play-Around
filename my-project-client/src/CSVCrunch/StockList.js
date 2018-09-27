@@ -1,4 +1,5 @@
 import StockCSV from "./ListOfStocks"
+import CustomStockCSV from "./ListOfStocksCustom"
 //var csv is the CSV file with headers
 function csvJSON(csv){
 
@@ -25,7 +26,9 @@ function csvJSON(csv){
   return JSON.stringify(result); //JSON
 }
 
-// const parsedCSV = csvJSON(StockCSV)
+// const parsedCSV = csvJSON(CustomStockCSV)
+//
 // console.log(parsedCSV)
 // debugger
 // 0
+// export default parsedCSV
