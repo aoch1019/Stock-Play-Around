@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 export default class Stock extends Component{
   state = {
-    currPrice: 0
+    currPrice: ""
   }
 
   componentDidMount(){
