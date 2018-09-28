@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import StockTable from '../components/StockTable';
 import '../stylesheets/App.css';
-import SubmitButton from '../components/SubmitButton';
 import DisplayETF from '../components/DisplayETF';
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
+import Login from '../components/Login';
+import Signup from '../components/Signup';
+import NavBar from '../components/NavBar';
+import MainViewContainer from './MainViewContainer';
 // import './CSVCrunch/StockList'
 
 class App extends Component {
@@ -13,7 +16,9 @@ constructor(props){
   this.state = {
     allStocks: [],
     selectedStocks: [],
-    currETF: null
+    currETF: null,
+    currUser: null,
+    nameInput: ""
   }
 
 this.selectStock = this.selectStock.bind(this)
@@ -40,6 +45,24 @@ this.createETF = this.createETF.bind(this)
           }))
         })
     })
+  }
+
+  handleNameInput = (event) => {
+    this.setState({nameInput: event.target.value})
+  }
+
+  handleLoginSubmit = (event) => {
+    event.preventDefault()
+    fetch(`http://localhost:3000/users`).then(res => res.json()).then(
+      users => users.find(user => user.name === this.state.nameInput)).then(
+        userObj => this.setState({
+          currUser: userObj,
+          nameInput: ""
+    }))
+  }
+
+  handleLogout = (event) => {
+    this.setState({currUser: null})
   }
 
   selectStock(stock){
@@ -96,14 +119,41 @@ this.createETF = this.createETF.bind(this)
           <img src='https://www.investmentweek.co.uk/w-images/788d48c0-a63c-4cce-8553-2bab367f1731/1/etfcards-580x358.jpg' className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to MeTF v0.1</h1>
         </header>
-        <p className="App-intro">
-          Please create your own ETF with 7 of the following stocks:
-        </p>
-      {this.state.currETF != null && < DisplayETF />}
-      < StockTable stockList={this.state.selectedStocks} handleClick={this.removeStock} button={"remove"} />
-      {this.state.selectedStocks.length} of 7
-      {this.state.selectedStocks.length === 7 && < SubmitButton handleClick={this.createETF} />}
-      < StockTable stockList={this.getUnselectedStocks()} handleClick={this.selectStock} button={"add"} />
+        <Router>
+          <React.Fragment>
+            {this.state.currUser ?
+                            <div>
+                              {this.state.currUser.name} is logged in.
+                              <button className="ui tiny button" onClick={this.handleLogout}>Logout</button>
+                            </div>
+                          :
+                            <Login  handleNameInput={this.handleNameInput}
+                                    handleLoginSubmit={this.handleLoginSubmit}
+                                    {...this.state}
+                                    />}
+            < NavBar />
+            <Route
+              exact path="/main-view"
+              render={ (renderProps) => {
+                return (
+                  < MainViewContainer selectedStocks={this.state.selectedStocks}
+                                      removeStock={this.removeStock}
+                                      createETF={this.createETF}
+                                      unselectedStocks={this.getUnselectedStocks()}
+                                      selectStock={this.selectStock} />
+                )
+              }}
+              />
+            <Route
+              exact path="/view-ETF"
+              render={ (renderProps) => {
+                return (
+                  <div>Here are your ETFs</div>
+                )
+              }}
+              />
+          </React.Fragment>
+        </Router>
       </div>
     );
   }
