@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import '../stylesheets/App.css';
-import DisplayETF from '../components/DisplayETF';
 import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 import Login from '../components/Login';
 import Signup from '../components/Signup';
 import NavBar from '../components/NavBar';
 import MainViewContainer from './MainViewContainer';
+import ViewEtfs from './ViewEtfs';
 // import './CSVCrunch/StockList'
 
 class App extends Component {
@@ -88,12 +88,14 @@ this.createETF = this.createETF.bind(this)
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({user_id: 1, score: 0})
+      body: JSON.stringify({user_id: this.state.currUser.id, score: 0})
     }).then(res => res.json())
       .then(etf => this.setState({
         currETF: etf
       })
-    ).then(() => this.createStockPicks())
+    ).then(() => this.createStockPicks()).then(() => this.setState({
+      selectedStocks: []
+    }))
   }
 
   createStockPicks(){
@@ -108,8 +110,7 @@ this.createETF = this.createETF.bind(this)
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({etf_id: this.state.currETF.id, stock_id: stock.id, initial_price: stock.price})
-    }).then(res => res.json())
-      .then(stockPick => console.log(stockPick));
+    })
   }
 
   render() {
@@ -148,7 +149,9 @@ this.createETF = this.createETF.bind(this)
               exact path="/view-ETF"
               render={ (renderProps) => {
                 return (
-                  <div>Here are your ETFs</div>
+                  this.state.currUser === null ? "Please Log In" :
+                  < ViewEtfs currUser={this.state.currUser}
+                             allStocks={this.state.allStocks} />
                 )
               }}
               />
