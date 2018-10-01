@@ -83,7 +83,6 @@ this.createETF = this.createETF.bind(this)
   }
 
   handleLogout = (event) => {
-    console.log(event.target)
     this.setState({currUser: null})
   }
 
