@@ -52,8 +52,10 @@ this.createETF = this.createETF.bind(this)
 
   handleLoginSubmit = (event) => {
     event.preventDefault()
-    fetch(`http://localhost:3000/users`).then(res => res.json()).then(
-      users => users.find(user => user.name === this.state.nameInput)).then(
+    fetch(`http://localhost:3000/users`)
+    .then(res => res.json())
+    .then(users => users.find(user => user.name === this.state.nameInput))
+    .then(
         userObj => this.setState({
           currUser: userObj,
           nameInput: ""
@@ -62,7 +64,23 @@ this.createETF = this.createETF.bind(this)
 
   handleSignupSubmit = (event) => {
     event.preventDefault()
-    console.log(event)
+    fetch(`http://localhost:3000/users`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'Post',
+      body: JSON.stringify({
+        name: this.state.nameInput
+      })
+    })
+    .then(res => console.log(res))
+    // .then(users => users.find(user => user.name === this.state.nameInput))
+    // .then(
+    //     userObj => this.setState({
+    //       currUser: userObj,
+    //       nameInput: ""
+    // }))
   }
 
   handleLogout = (event) => {
@@ -156,7 +174,7 @@ this.createETF = this.createETF.bind(this)
                 return (
                   <Login  handleNameInput={this.handleNameInput}
                           handleLoginSubmit={this.handleLoginSubmit}
-                          {...this.state}
+                          nameInput={this.state.nameInput}
                           />
                 )
               }}
@@ -168,7 +186,7 @@ this.createETF = this.createETF.bind(this)
                 return (
                   <Signup handleNameInput={this.handleNameInput}
                           handleSignupSubmit={this.handleSignupSubmit}
-                          {...this.state}
+                          nameInput={this.state.nameInput}
                           />
                 )
               }}

@@ -7,7 +7,7 @@ const NavBar = (props) => {
       <NavLink className="active item" to="/main-view" >Main View</NavLink>
       <NavLink className="item" to="/view-ETF" >View ETF(s)</NavLink>
         {props.currUser ?
-                        <button className="ui tiny button" onClick={this.handleLogout}>Logout {this.state.currUser.name}</button>
+                        <div className="item" onClick={this.handleLogout}>Logout {props.currUser.name}</div>
                       :
                         <NavLink className="item" to="/Login">Login</NavLink>
                         }

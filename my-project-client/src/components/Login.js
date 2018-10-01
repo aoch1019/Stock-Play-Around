@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 const Login = (props) => {
   return (
-    <form onSubmit={props.handleLoginSubmit} className="ui small form">
+    <form onSubmit={props.handleLoginSubmit} className="ui form">
       <div className="field">
         <input  onChange={props.handleNameInput}
                   placeholder="Username"
@@ -26,4 +26,4 @@ const Login = (props) => {
   )
 }
 
-export default Login
+export default Login;

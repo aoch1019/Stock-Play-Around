@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 const Signup = (props) => {
   return (
-    <form onSubmit={props.handleLoginSubmit} className="ui form">
+    <form onSubmit={props.handleSignupSubmit} className="ui form">
       <div className="field">
         <input  onChange={props.handleNameInput}
                   placeholder="Username"
