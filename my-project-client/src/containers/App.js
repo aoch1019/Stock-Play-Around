@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import '../stylesheets/App.css';
-import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
+// import DisplayETF from '../components/DisplayETF';
+import { Route } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import Login from '../components/Login';
 import Signup from '../components/Signup';
+import SignupSuccess from '../components/SignupSuccess';
+import EditAccount from '../components/EditAccount';
 import NavBar from '../components/NavBar';
 import MainViewContainer from './MainViewContainer';
 import ViewEtfs from './ViewEtfs';
@@ -26,7 +30,6 @@ this.removeStock = this.removeStock.bind(this)
 this.createETF = this.createETF.bind(this)
 
 }
-
 
   componentDidMount(){
     fetch(`http://localhost:3000/stocks`).then(
@@ -53,11 +56,30 @@ this.createETF = this.createETF.bind(this)
 
   handleLoginSubmit = (event) => {
     event.preventDefault()
-    fetch(`http://localhost:3000/users`).then(res => res.json()).then(
-      users => users.find(user => user.name === this.state.nameInput)).then(
+    fetch(`http://localhost:3000/users`)
+    .then(res => res.json())
+    .then(users => users.find(user => user.name === this.state.nameInput))
+    .then(
         userObj => this.setState({
           currUser: userObj,
           nameInput: ""
+    }))
+  }
+
+  handleSignupSubmit = (event) => {
+    event.preventDefault()
+    fetch(`http://localhost:3000/users`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'Post',
+      body: JSON.stringify({
+        name: this.state.nameInput
+      })
+    })
+    .then(res => this.props.history.push('/SignupSuccess'), this.setState({
+      nameInput: ""
     }))
   }
 
@@ -120,32 +142,23 @@ this.createETF = this.createETF.bind(this)
           <img src='https://www.investmentweek.co.uk/w-images/788d48c0-a63c-4cce-8553-2bab367f1731/1/etfcards-580x358.jpg' className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to MeTF v0.1</h1>
         </header>
-        <Router>
-          <React.Fragment>
-            {this.state.currUser ?
-                            <div>
-                              {this.state.currUser.name} is logged in.
-                              <button className="ui tiny button" onClick={this.handleLogout}>Logout</button>
-                            </div>
-                          :
-                            <Login  handleNameInput={this.handleNameInput}
-                                    handleLoginSubmit={this.handleLoginSubmit}
-                                    {...this.state}
-                                    />}
-            < NavBar />
-            <Route
-              exact path="/main-view"
-              render={ (renderProps) => {
-                return (
-                  < MainViewContainer selectedStocks={this.state.selectedStocks}
-                                      removeStock={this.removeStock}
-                                      createETF={this.createETF}
-                                      unselectedStocks={this.getUnselectedStocks()}
-                                      selectStock={this.selectStock} />
-                )
-              }}
-              />
-            <Route
+        <React.Fragment>
+          <NavBar {...this.state} handleLogout={this.handleLogout} />
+          <Route
+            exact
+            path="/main-view"
+            render={ (renderProps) => {
+              return (
+                <MainViewContainer  selectedStocks={this.state.selectedStocks}
+                                    removeStock={this.removeStock}
+                                    createETF={this.createETF}
+                                    unselectedStocks={this.getUnselectedStocks()}
+                                    selectStock={this.selectStock}
+                                    />
+              )
+            }}
+            />
+          <Route
               exact path="/view-ETF"
               render={ (renderProps) => {
                 return (
@@ -154,12 +167,67 @@ this.createETF = this.createETF.bind(this)
                              allStocks={this.state.allStocks} />
                 )
               }}
+            />
+          <Route
+            exact
+            path="/Login"
+            render={ (renderProps) => {
+              return (
+                <Login  handleNameInput={this.handleNameInput}
+                        handleLoginSubmit={this.handleLoginSubmit}
+                        nameInput={this.state.nameInput}
+                        />
+              )
+            }}
+            />
+          <Route
+            exact
+            path="/Signup"
+            render={ (renderProps) => {
+              return (
+                <Signup handleNameInput={this.handleNameInput}
+                        handleSignupSubmit={this.handleSignupSubmit}
+                        nameInput={this.state.nameInput}
+                        />
+              )
+            }}
+            />
+            <Route
+              exact
+              path="/SignupSuccess"
+              render={ (renderProps) => {
+                return (
+                  <SignupSuccess  handleNameInput={this.handleNameInput}
+                                  handleSignupSubmit={this.handleSignupSubmit}
+                                  nameInput={this.state.nameInput}
+                                  />
+                )
+              }}
               />
-          </React.Fragment>
-        </Router>
+            <Route
+              exact
+              path="/Edit Account"
+              render={ (renderProps) => {
+                return (
+                  <EditAccount />)
+              }}
+              />
+              <Route
+                exact
+                path="/Logout"
+                render={ (renderProps) => {
+                  return (
+                    <Login  handleNameInput={this.handleNameInput}
+                            handleLoginSubmit={this.handleLoginSubmit}
+                            nameInput={this.state.nameInput}
+                            />
+                  )
+                }}
+                />
+        </React.Fragment>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
