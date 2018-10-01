@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import '../stylesheets/App.css';
 import { Route } from 'react-router-dom';
 import { withRouter } from 'react-router';
+import MainView from './MainView';
 import Login from '../components/Login';
 import Signup from '../components/Signup';
 import SignupSuccess from '../components/SignupSuccess';
 import NavBar from '../components/NavBar';
-import MainViewContainer from './MainViewContainer';
+import CreateETF from './CreateETF';
 import ViewEtfs from './ViewEtfs';
 
 class App extends Component {
@@ -141,17 +142,26 @@ this.createETF = this.createETF.bind(this)
         </header>
         <React.Fragment>
           <NavBar {...this.state} handleLogout={this.handleLogout} />
+            <Route
+              exact
+              path="/MainView"
+              render={ (renderProps) => {
+                return (
+                  <MainView />
+                )
+              }}
+            />
           <Route
             exact
-            path="/main-view"
+            path="/create-ETF"
             render={ (renderProps) => {
               return (
-                <MainViewContainer  selectedStocks={this.state.selectedStocks}
-                                    removeStock={this.removeStock}
-                                    createETF={this.createETF}
-                                    unselectedStocks={this.getUnselectedStocks()}
-                                    selectStock={this.selectStock}
-                                    />
+                <CreateETF  selectedStocks={this.state.selectedStocks}
+                            removeStock={this.removeStock}
+                            createETF={this.createETF}
+                            unselectedStocks={this.getUnselectedStocks()}
+                            selectStock={this.selectStock}
+                            />
               )
             }}
             />

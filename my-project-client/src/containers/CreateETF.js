@@ -2,7 +2,7 @@ import React from 'react'
 import SubmitButton from '../components/SubmitButton';
 import StockTable from '../components/StockTable';
 
-const MainViewContainer = (props) => {
+const CreateETF = (props) => {
 
   return(
     <React.Fragment>
@@ -17,4 +17,4 @@ const MainViewContainer = (props) => {
   )
 }
 
-export default MainViewContainer
+export default CreateETF
