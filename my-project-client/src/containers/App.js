@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import '../stylesheets/App.css';
 // import DisplayETF from '../components/DisplayETF';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import Login from '../components/Login';
 import Signup from '../components/Signup';
+import SignupSuccess from '../components/SignupSuccess';
+import EditAccount from '../components/EditAccount';
 import NavBar from '../components/NavBar';
 import MainViewContainer from './MainViewContainer';
 // import './CSVCrunch/StockList'
@@ -74,16 +77,13 @@ this.createETF = this.createETF.bind(this)
         name: this.state.nameInput
       })
     })
-    .then(res => console.log(res))
-    // .then(users => users.find(user => user.name === this.state.nameInput))
-    // .then(
-    //     userObj => this.setState({
-    //       currUser: userObj,
-    //       nameInput: ""
-    // }))
+    .then(res => this.props.history.push('/SignupSuccess'), this.setState({
+      nameInput: ""
+    }))
   }
 
   handleLogout = (event) => {
+    console.log(event.target)
     this.setState({currUser: null})
   }
 
@@ -141,61 +141,91 @@ this.createETF = this.createETF.bind(this)
           <img src='https://www.investmentweek.co.uk/w-images/788d48c0-a63c-4cce-8553-2bab367f1731/1/etfcards-580x358.jpg' className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to MeTF v0.1</h1>
         </header>
-        <Router>
-          <React.Fragment>
-            <NavBar {...this.state} />
+        <React.Fragment>
+          <NavBar {...this.state} handleLogout={this.handleLogout} />
+          <Route
+            exact
+            path="/main-view"
+            render={ (renderProps) => {
+              return (
+                <MainViewContainer  selectedStocks={this.state.selectedStocks}
+                                    removeStock={this.removeStock}
+                                    createETF={this.createETF}
+                                    unselectedStocks={this.getUnselectedStocks()}
+                                    selectStock={this.selectStock}
+                                    />
+              )
+            }}
+            />
+          <Route
+            exact
+            path="/view-ETF"
+            render={ (renderProps) => {
+              return (
+                <div>Here are your ETFs</div>
+              )
+            }}
+            />
+          <Route
+            exact
+            path="/Login"
+            render={ (renderProps) => {
+              return (
+                <Login  handleNameInput={this.handleNameInput}
+                        handleLoginSubmit={this.handleLoginSubmit}
+                        nameInput={this.state.nameInput}
+                        />
+              )
+            }}
+            />
+          <Route
+            exact
+            path="/Signup"
+            render={ (renderProps) => {
+              return (
+                <Signup handleNameInput={this.handleNameInput}
+                        handleSignupSubmit={this.handleSignupSubmit}
+                        nameInput={this.state.nameInput}
+                        />
+              )
+            }}
+            />
             <Route
               exact
-              path="/main-view"
+              path="/SignupSuccess"
               render={ (renderProps) => {
                 return (
-                  <MainViewContainer  selectedStocks={this.state.selectedStocks}
-                                      removeStock={this.removeStock}
-                                      createETF={this.createETF}
-                                      unselectedStocks={this.getUnselectedStocks()}
-                                      selectStock={this.selectStock}
-                                      />
+                  <SignupSuccess  handleNameInput={this.handleNameInput}
+                                  handleSignupSubmit={this.handleSignupSubmit}
+                                  nameInput={this.state.nameInput}
+                                  />
                 )
               }}
               />
             <Route
               exact
-              path="/view-ETF"
+              path="/Edit Account"
               render={ (renderProps) => {
                 return (
-                  <div>Here are your ETFs</div>
-                )
+                  <EditAccount />)
               }}
               />
-            <Route
-              exact
-              path="/Login"
-              render={ (renderProps) => {
-                return (
-                  <Login  handleNameInput={this.handleNameInput}
-                          handleLoginSubmit={this.handleLoginSubmit}
-                          nameInput={this.state.nameInput}
-                          />
-                )
-              }}
-              />
-            <Route
-              exact
-              path="/Signup"
-              render={ (renderProps) => {
-                return (
-                  <Signup handleNameInput={this.handleNameInput}
-                          handleSignupSubmit={this.handleSignupSubmit}
-                          nameInput={this.state.nameInput}
-                          />
-                )
-              }}
-              />
-          </React.Fragment>
-        </Router>
+              <Route
+                exact
+                path="/Logout"
+                render={ (renderProps) => {
+                  return (
+                    <Login  handleNameInput={this.handleNameInput}
+                            handleLoginSubmit={this.handleLoginSubmit}
+                            nameInput={this.state.nameInput}
+                            />
+                  )
+                }}
+                />
+        </React.Fragment>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

@@ -1,9 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const Signup = (props) => {
+const SignupSuccess = (props) => {
+
   return (
-    <form onSubmit={props.handleSignupSubmit} className="ui form">
+    <form onSubmit={props.handleSignupSubmit} className="ui form success">
       <div className="field">
         <input  onChange={props.handleNameInput}
                   placeholder="Username"
@@ -16,8 +17,13 @@ const Signup = (props) => {
                 value="Signup"
                 className="ui submit button" />
        </div>
+       <div className="ui success message">
+          <div className="header">Form Completed</div>
+          <p>Welcome! You have successfully created your account.</p>
+        </div>
+
        <div className="field">
-        <p>Already have an account?</p>
+        <p>Please enter your username to login.</p>
          <NavLink className="ui button"
                   to="/Login"
                   >Login</NavLink>
@@ -26,4 +32,4 @@ const Signup = (props) => {
   )
 }
 
-export default Signup;
+export default SignupSuccess;
