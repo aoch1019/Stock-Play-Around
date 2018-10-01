@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import '../stylesheets/App.css';
-// import DisplayETF from '../components/DisplayETF';
 import { Route } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import Login from '../components/Login';
 import Signup from '../components/Signup';
 import SignupSuccess from '../components/SignupSuccess';
-import EditAccount from '../components/EditAccount';
 import NavBar from '../components/NavBar';
 import MainViewContainer from './MainViewContainer';
 import ViewEtfs from './ViewEtfs';
-// import './CSVCrunch/StockList'
 
 class App extends Component {
 
@@ -202,14 +199,6 @@ this.createETF = this.createETF.bind(this)
                                   nameInput={this.state.nameInput}
                                   />
                 )
-              }}
-              />
-            <Route
-              exact
-              path="/Edit Account"
-              render={ (renderProps) => {
-                return (
-                  <EditAccount />)
               }}
               />
               <Route
