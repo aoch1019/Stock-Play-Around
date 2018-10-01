@@ -131,9 +131,10 @@ this.createETF = this.createETF.bind(this)
                                     handleLoginSubmit={this.handleLoginSubmit}
                                     {...this.state}
                                     />}
-            < NavBar />
+            <NavBar />
             <Route
-              exact path="/main-view"
+              exact
+              path="/main-view"
               render={ (renderProps) => {
                 return (
                   < MainViewContainer selectedStocks={this.state.selectedStocks}
@@ -145,10 +146,20 @@ this.createETF = this.createETF.bind(this)
               }}
               />
             <Route
-              exact path="/view-ETF"
+              exact
+              path="/view-ETF"
               render={ (renderProps) => {
                 return (
                   <div>Here are your ETFs</div>
+                )
+              }}
+              />
+            <Route
+              exact
+              path="/Signup"
+              render={ (renderProps) => {
+                return (
+                  <Signup />
                 )
               }}
               />
