@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../stylesheets/App.css';
-import DisplayETF from '../components/DisplayETF';
-import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
+// import DisplayETF from '../components/DisplayETF';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Login from '../components/Login';
 import Signup from '../components/Signup';
 import NavBar from '../components/NavBar';
@@ -26,7 +26,6 @@ this.removeStock = this.removeStock.bind(this)
 this.createETF = this.createETF.bind(this)
 
 }
-
 
   componentDidMount(){
     fetch(`http://localhost:3000/stocks`).then(
@@ -59,6 +58,11 @@ this.createETF = this.createETF.bind(this)
           currUser: userObj,
           nameInput: ""
     }))
+  }
+
+  handleSignupSubmit = (event) => {
+    event.preventDefault()
+    console.log(event)
   }
 
   handleLogout = (event) => {
@@ -121,27 +125,18 @@ this.createETF = this.createETF.bind(this)
         </header>
         <Router>
           <React.Fragment>
-            {this.state.currUser ?
-                            <div>
-                              {this.state.currUser.name} is logged in.
-                              <button className="ui tiny button" onClick={this.handleLogout}>Logout</button>
-                            </div>
-                          :
-                            <Login  handleNameInput={this.handleNameInput}
-                                    handleLoginSubmit={this.handleLoginSubmit}
-                                    {...this.state}
-                                    />}
-            <NavBar />
+            <NavBar {...this.state} />
             <Route
               exact
               path="/main-view"
               render={ (renderProps) => {
                 return (
-                  < MainViewContainer selectedStocks={this.state.selectedStocks}
+                  <MainViewContainer  selectedStocks={this.state.selectedStocks}
                                       removeStock={this.removeStock}
                                       createETF={this.createETF}
                                       unselectedStocks={this.getUnselectedStocks()}
-                                      selectStock={this.selectStock} />
+                                      selectStock={this.selectStock}
+                                      />
                 )
               }}
               />
@@ -156,10 +151,25 @@ this.createETF = this.createETF.bind(this)
               />
             <Route
               exact
+              path="/Login"
+              render={ (renderProps) => {
+                return (
+                  <Login  handleNameInput={this.handleNameInput}
+                          handleLoginSubmit={this.handleLoginSubmit}
+                          {...this.state}
+                          />
+                )
+              }}
+              />
+            <Route
+              exact
               path="/Signup"
               render={ (renderProps) => {
                 return (
-                  <Signup />
+                  <Signup handleNameInput={this.handleNameInput}
+                          handleSignupSubmit={this.handleSignupSubmit}
+                          {...this.state}
+                          />
                 )
               }}
               />

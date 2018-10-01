@@ -3,17 +3,13 @@ import { NavLink } from 'react-router-dom';
 
 const Signup = (props) => {
   return (
-    <form onSubmit={props.handleSubmit} className="ui form">
+    <form onSubmit={props.handleLoginSubmit} className="ui form">
       <div className="field">
-        <input  onChange={props.handleUsernameInput}
+        <input  onChange={props.handleNameInput}
                   placeholder="Username"
                   type="text"
-                  value={props.usernameInput}
+                  value={props.nameInput}
                 />
-      </div>
-      <div className="ui checkbox">
-        <input type="checkbox" tabindex="0" className="hidden"/>
-        <label>I agree to the Terms and Conditions</label>
       </div>
       <div className="field">
         <input  type='submit'
@@ -31,3 +27,9 @@ const Signup = (props) => {
 }
 
 export default Signup;
+
+// Possible T&C Checkbox:
+// <div className="ui checkbox">
+//   <input type="checkbox" tabIndex="0" className="hidden"/>
+//   <label>I agree to the Terms and Conditions</label>
+// </div>
