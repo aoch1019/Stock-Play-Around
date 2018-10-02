@@ -171,9 +171,12 @@ class App extends Component {
             path="/Leaderboard"
             render={ (renderProps) => {
               return (
-                  <Leaderboard  {...this.state}
-                                handleSelectedLeaderBoardUser={this.handleSelectedLeaderBoardUser}
-                                />
+                  <React.Fragment>
+                    <h1>Leaderboard</h1>
+                    <Leaderboard  {...this.state}
+                                  handleSelectedLeaderBoardUser={this.handleSelectedLeaderBoardUser}
+                                  />
+                  </React.Fragment>
                 )
               }}
             />
@@ -217,10 +220,13 @@ class App extends Component {
             path="/Login"
             render={ (renderProps) => {
               return (
-                <Login  handleNameInput={this.handleNameInput}
-                        handleLoginSubmit={this.handleLoginSubmit}
-                        nameInput={this.state.nameInput}
-                        />
+                <React.Fragment>
+                  <h3>Please login</h3>
+                  <Login  handleNameInput={this.handleNameInput}
+                          handleLoginSubmit={this.handleLoginSubmit}
+                          nameInput={this.state.nameInput}
+                          />
+                </React.Fragment>
                     )
               }}
             />
@@ -229,10 +235,13 @@ class App extends Component {
             path="/Signup"
             render={ (renderProps) => {
               return (
-                <Signup handleNameInput={this.handleNameInput}
-                        handleSignupSubmit={this.handleSignupSubmit}
-                        nameInput={this.state.nameInput}
-                        />
+                <React.Fragment>
+                  <h3>Signup to create your own ETFs and score on the leaderboard.</h3>
+                  <Signup handleNameInput={this.handleNameInput}
+                          handleSignupSubmit={this.handleSignupSubmit}
+                          nameInput={this.state.nameInput}
+                          />
+                </React.Fragment>
                     )
               }}
             />
