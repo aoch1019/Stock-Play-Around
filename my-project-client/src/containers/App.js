@@ -18,7 +18,7 @@ class App extends Component {
     this.state = {
       allStocks: [],
       selectedStocks: [],
-      topETFs: [],
+      topETFs: null,
       currETF: null,
       currUser: null,
       nameInput: ""
