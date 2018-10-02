@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../stylesheets/App.css';
 import { Route } from 'react-router-dom';
 import { withRouter } from 'react-router';
-import MainView from './MainView';
+import Leaderboard from './Leaderboard';
 import Login from '../components/Login';
 import Signup from '../components/Signup';
 import SignupSuccess from '../components/SignupSuccess';
@@ -18,7 +18,7 @@ class App extends Component {
     this.state = {
       allStocks: [],
       selectedStocks: [],
-      topETFs: null,
+      topETFs: [],
       currETF: null,
       currUser: null,
       nameInput: ""
@@ -36,7 +36,11 @@ class App extends Component {
 
     Promise.all([topETFsPromise, stocksPromise])
      .then(data => {
-       this.setState({topETFs: data[0]})
+       const sortedTopETFs = data[0].sort(function(a, b) {
+         return b.score - a.score
+       })
+
+       this.setState({topETFs: sortedTopETFs})
        return data[1]
     })
     .then(data => this.addCurrPrice(data))
@@ -152,10 +156,10 @@ class App extends Component {
           <NavBar {...this.state} handleLogout={this.handleLogout} />
           <Route
             exact
-            path="/main-view"
+            path="/Leaderboard"
             render={ (renderProps) => {
               return (
-                  <MainView {...this.state}/>
+                  <Leaderboard {...this.state}/>
                 )
               }}
             />
