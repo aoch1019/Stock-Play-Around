@@ -21,7 +21,8 @@ class App extends Component {
       topETFs: [],
       currETF: null,
       currUser: null,
-      nameInput: ""
+      nameInput: "",
+      selectedUserToDisplayETFs: null
     }
 
     this.selectStock = this.selectStock.bind(this)
@@ -95,6 +96,17 @@ class App extends Component {
     this.setState({currUser: null})
   }
 
+  handleSelectedLeaderBoardUser = (event) => {
+    const selectedUser = event.target.text
+    fetch('http://localhost:3000/users')
+    .then(res => res.json())
+    .then(users => {
+      const foundUser = users.find((user) => user.name === selectedUser)
+
+      this.setState({selectedUserToDisplayETFs: foundUser})
+    })
+  }
+
   selectStock(stock){
     this.setState(prevState => ({
       selectedStocks: [...prevState.selectedStocks, stock]
@@ -159,7 +171,9 @@ class App extends Component {
             path="/Leaderboard"
             render={ (renderProps) => {
               return (
-                  <Leaderboard {...this.state}/>
+                  <Leaderboard  {...this.state}
+                                handleSelectedLeaderBoardUser={this.handleSelectedLeaderBoardUser}
+                                />
                 )
               }}
             />
@@ -187,6 +201,17 @@ class App extends Component {
                          )
               }}
             />
+            <Route
+                exact path="/user-ETFs"
+                render={ (renderProps) => {
+                  return (
+                    this.state.selectedUserToDisplayETFs === null ? "Loading" :
+                    <ViewEtfs currUser={this.state.selectedUserToDisplayETFs}
+                              allStocks={this.state.allStocks}
+                              />
+                           )
+                }}
+              />
           <Route
             exact
             path="/Login"

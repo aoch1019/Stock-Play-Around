@@ -24,7 +24,11 @@ const Leaderboard = (props) => {
             </tr>
 
             {props.topETFs.map(function(etf, idx){
-              return <LeaderboardRow key={idx} etf={etf} place={idx+1} />
+              return <LeaderboardRow  key={idx}
+                                      etf={etf}
+                                      place={idx+1}
+                                      handleSelectedLeaderBoardUser={props.handleSelectedLeaderBoardUser}
+                                      />
             })}
 
           </tbody>

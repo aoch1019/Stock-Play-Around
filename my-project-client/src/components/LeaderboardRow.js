@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 class LeaderboardRow extends React.Component {
 
@@ -16,7 +17,11 @@ class LeaderboardRow extends React.Component {
     return (
       <tr>
         <td>{this.props.place}</td>
-        <td>{this.state.name}</td>
+        <td><NavLink  to="/user-ETFs"
+                      onClick={this.props.handleSelectedLeaderBoardUser}
+                      >
+                      {this.state.name}
+                    </NavLink></td>
         <td>{this.props.etf.score}</td>
       </tr>
     )
