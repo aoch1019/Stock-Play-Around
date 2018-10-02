@@ -2,44 +2,51 @@ import React, { Component } from 'react';
 import '../stylesheets/App.css';
 import { Route } from 'react-router-dom';
 import { withRouter } from 'react-router';
+import MainView from './MainView';
 import Login from '../components/Login';
 import Signup from '../components/Signup';
 import SignupSuccess from '../components/SignupSuccess';
 import NavBar from '../components/NavBar';
-import MainViewContainer from './MainViewContainer';
+import CreateETF from './CreateETF';
 import ViewEtfs from './ViewEtfs';
 
 class App extends Component {
 
-constructor(props){
-  super(props)
+  constructor(props){
+    super(props)
 
-  this.state = {
-    allStocks: [],
-    selectedStocks: [],
-    currETF: null,
-    currUser: null,
-    nameInput: ""
+    this.state = {
+      allStocks: [],
+      selectedStocks: [],
+      topETFs: null,
+      currETF: null,
+      currUser: null,
+      nameInput: ""
+    }
+
+    this.selectStock = this.selectStock.bind(this)
+    this.removeStock = this.removeStock.bind(this)
+    this.createETF = this.createETF.bind(this)
+
   }
 
-this.selectStock = this.selectStock.bind(this)
-this.removeStock = this.removeStock.bind(this)
-this.createETF = this.createETF.bind(this)
+  componentDidMount() {
+    const topETFsPromise = fetch(`http://localhost:3000/etfs`).then(r => r.json())
+    const stocksPromise = fetch(`http://localhost:3000/stocks`).then(r => r.json())
 
-}
-
-  componentDidMount(){
-    fetch(`http://localhost:3000/stocks`).then(
-      res => res.json())
-      .then(data => {
-        this.addCurrPrice(data)
-      })
+    Promise.all([topETFsPromise, stocksPromise])
+     .then(data => {
+       this.setState({topETFs: data[0]})
+       return data[1]
+    })
+    .then(data => this.addCurrPrice(data))
   }
 
   addCurrPrice(stocksData){
     return stocksData.map(stock => {
-      return fetch(`https://api.iextrading.com/1.0/stock/${stock.symbol}/book`).then(
-        res => res.json()).then(info => {
+      return fetch(`https://api.iextrading.com/1.0/stock/${stock.symbol}/book`)
+        .then(res => res.json())
+        .then(info => {
           this.setState(prevState => ({
             allStocks: [...prevState.allStocks, {...stock, price: info.quote.extendedPrice}]
           }))
@@ -108,11 +115,13 @@ this.createETF = this.createETF.bind(this)
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({user_id: this.state.currUser.id, score: 0})
-    }).then(res => res.json())
-      .then(etf => this.setState({
+    })
+    .then(res => res.json())
+    .then(etf => this.setState({
         currETF: etf
-      })
-    ).then(() => this.createStockPicks()).then(() => this.setState({
+      }))
+    .then(() => this.createStockPicks())
+    .then(() => this.setState({
       selectedStocks: []
     }))
   }
@@ -146,23 +155,32 @@ this.createETF = this.createETF.bind(this)
             path="/main-view"
             render={ (renderProps) => {
               return (
-                <MainViewContainer  selectedStocks={this.state.selectedStocks}
-                                    removeStock={this.removeStock}
-                                    createETF={this.createETF}
-                                    unselectedStocks={this.getUnselectedStocks()}
-                                    selectStock={this.selectStock}
-                                    />
-              )
-            }}
+                  <MainView {...this.state}/>
+                )
+              }}
+            />
+          <Route
+            exact
+            path="/create-ETF"
+            render={ (renderProps) => {
+              return (
+                <CreateETF  selectedStocks={this.state.selectedStocks}
+                            removeStock={this.removeStock}
+                            createETF={this.createETF}
+                            unselectedStocks={this.getUnselectedStocks()}
+                            selectStock={this.selectStock}
+                            />
+                        )
+              }}
             />
           <Route
               exact path="/view-ETF"
               render={ (renderProps) => {
                 return (
                   this.state.currUser === null ? "Please Log In" :
-                  < ViewEtfs currUser={this.state.currUser}
+                  <ViewEtfs currUser={this.state.currUser}
                              allStocks={this.state.allStocks} />
-                )
+                         )
               }}
             />
           <Route
@@ -174,8 +192,8 @@ this.createETF = this.createETF.bind(this)
                         handleLoginSubmit={this.handleLoginSubmit}
                         nameInput={this.state.nameInput}
                         />
-              )
-            }}
+                    )
+              }}
             />
           <Route
             exact
@@ -186,8 +204,8 @@ this.createETF = this.createETF.bind(this)
                         handleSignupSubmit={this.handleSignupSubmit}
                         nameInput={this.state.nameInput}
                         />
-              )
-            }}
+                    )
+              }}
             />
             <Route
               exact
@@ -198,8 +216,8 @@ this.createETF = this.createETF.bind(this)
                                   handleSignupSubmit={this.handleSignupSubmit}
                                   nameInput={this.state.nameInput}
                                   />
-                )
-              }}
+                              )
+                }}
               />
               <Route
                 exact
@@ -210,8 +228,8 @@ this.createETF = this.createETF.bind(this)
                             handleLoginSubmit={this.handleLoginSubmit}
                             nameInput={this.state.nameInput}
                             />
-                  )
-                }}
+                        )
+                  }}
                 />
         </React.Fragment>
       </div>

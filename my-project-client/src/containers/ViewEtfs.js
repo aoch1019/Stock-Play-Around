@@ -39,7 +39,7 @@ export default class ViewEtfs extends Component{
 
   render(){
     return(
-        this.state.etfList.map((etf, idx) => < DisplayETF key={idx} etf={etf} allStocks={this.props.allStocks} />)
+        this.state.etfList.map((etf, idx) => <DisplayETF key={idx} etf={etf} allStocks={this.props.allStocks} />)
     )
   }
 

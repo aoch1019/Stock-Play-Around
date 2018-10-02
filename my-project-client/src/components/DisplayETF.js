@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ETFTable from './ETFTable';
 
 export default class DisplayETF extends Component{
-
   constructor(props){
     super(props)
     this.state = {
@@ -93,7 +92,7 @@ export default class DisplayETF extends Component{
       <table className="ui celled striped padded table">
           <tbody>
         {this.state.pickList.map(function(pick, idx){
-          return < ETFTable key={idx} idx={idx} pick={pick} />
+          return <ETFTable key={idx} idx={idx} pick={pick} />
           })
         }
 
