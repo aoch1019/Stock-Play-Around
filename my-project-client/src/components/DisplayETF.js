@@ -6,11 +6,14 @@ export default class DisplayETF extends Component{
   constructor(props){
     super(props)
     this.state = {
-      pickList: []
+      pickList: [],
+      score: 0
     }
 
     this.getAllPicks = this.getAllPicks.bind(this)
     this.getStockInfo = this.getStockInfo.bind(this)
+    this.calculateScore = this.calculateScore.bind(this)
+    this.updateDatabase = this.updateDatabase.bind(this)
   }
 
 
@@ -36,6 +39,32 @@ export default class DisplayETF extends Component{
           pickList: [...prevState.pickList, toAdd]
         }))
       })
+    this.calculateScore()
+  }
+
+  calculateScore(){
+    let total = 0
+    this.state.pickList.forEach(function(pick){
+      total += ((pick.current_price - pick.initial_price)/pick.initial_price)
+    })
+    let totalScore = total / 7
+    this.setState({
+      score: totalScore
+    })
+    this.updateDatabase()
+  }
+
+  updateDatabase(){
+    fetch(`http://localhost:3000/etfs/${this.props.etf.id}`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'PATCH',
+      body: JSON.stringify({
+        score: (this.state.score * 10000000)
+      })
+    })
   }
         // fetch(`http://localhost:3000/stocks/${pick.stock_id}`).then(res => res.json()).then(stock => {
         // let info = {...pick, name: stock.name, symbol: stock.symbol}
@@ -67,6 +96,14 @@ export default class DisplayETF extends Component{
           return < ETFTable key={idx} idx={idx} pick={pick} />
           })
         }
+
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{Math.round(this.state.score * 10000) / 100}%</td>
+          </tr>
         </tbody>
       </table>
 

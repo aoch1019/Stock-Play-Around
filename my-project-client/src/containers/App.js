@@ -70,7 +70,7 @@ this.createETF = this.createETF.bind(this)
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      method: 'Post',
+      method: 'POST',
       body: JSON.stringify({
         name: this.state.nameInput
       })
