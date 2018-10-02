@@ -35,15 +35,11 @@ class App extends Component {
     const stocksPromise = fetch(`http://localhost:3000/stocks`).then(r => r.json())
 
     Promise.all([topETFsPromise, stocksPromise])
-     .then(data => console.log(data))
-
-    // fetch(`http://localhost:3000/etfs`)
-    // .then(res => res.json())
-    // .then(etfs => this.setState({ topETFs: etfs }))
-    // .then(fetch(`http://localhost:3000/stocks`)
-    //   .then(res => res.json())
-    //   .then(data => this.addCurrPrice(data))
-    // );
+     .then(data => {
+       this.setState({topETFs: data[0]})
+       return data[1]
+    })
+    .then(data => this.addCurrPrice(data))
   }
 
   addCurrPrice(stocksData){
@@ -159,7 +155,7 @@ class App extends Component {
             path="/main-view"
             render={ (renderProps) => {
               return (
-                  <MainView topETFs={this.state.topETFs}/>
+                  <MainView {...this.state}/>
                 )
               }}
             />
