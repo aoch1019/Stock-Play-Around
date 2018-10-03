@@ -37,7 +37,7 @@ const ETFTable = (props) => {
                     <td>{props.pick.symbol}</td>
                     <td>${props.pick.initial_price}</td>
                     <td>${props.pick.current_price}</td>
-                    <td>{Math.round(((props.pick.current_price - props.pick.initial_price)/props.pick.initial_price) * 10000) / 100}%</td>
+                    <td>{(Math.round(((props.pick.current_price - props.pick.initial_price)/props.pick.initial_price) * 10000) / 100) > 0 && "+"}{Math.round(((props.pick.current_price - props.pick.initial_price)/props.pick.initial_price) * 10000) / 100}%</td>
                   </tr>
                 </React.Fragment>
               :
@@ -45,8 +45,8 @@ const ETFTable = (props) => {
                 <td>{props.pick.name.replace(/"/g, '')}</td>
                 <td>{props.pick.symbol}</td>
                 <td>${props.pick.initial_price}</td>
-                <td>${props.pick.current_price}</td>                
-                <td>{Math.round(((props.pick.current_price - props.pick.initial_price)/props.pick.initial_price) * 10000) / 100}%</td>
+                <td>${props.pick.current_price}</td>
+                <td>{(Math.round(((props.pick.current_price - props.pick.initial_price)/props.pick.initial_price) * 10000) / 100) > 0 && "+"}{Math.round(((props.pick.current_price - props.pick.initial_price)/props.pick.initial_price) * 10000) / 100}%</td>
               </tr>
   )
 }

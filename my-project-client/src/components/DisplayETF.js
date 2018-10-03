@@ -108,7 +108,7 @@ export default class DisplayETF extends Component{
               <td></td>
               <td></td>
               <td></td>
-              <td>{Math.round(this.state.score * 10000) / 100}%</td>
+              <td>{(Math.round(this.state.score * 10000) / 100) > 0 && "+"}{Math.round(this.state.score * 10000) / 100}%</td>
             </tr>
           </tbody>
         </table>
