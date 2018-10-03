@@ -63,7 +63,9 @@ class Leaderboard extends Component{
 
           <React.Fragment>
             <DisplayETF etf={this.state.clickedETF} allStocks={this.props.allStocks} />
-            <button className="ui button" onClick={() => this.setState({ clickedETF: null })}>Return to Leaderboard</button>
+            <div className="Leaderboard-button">
+              <button className="ui button" onClick={() => this.setState({ clickedETF: null })}>Return to Leaderboard</button>
+            </div>
           </React.Fragment>
     )
   }

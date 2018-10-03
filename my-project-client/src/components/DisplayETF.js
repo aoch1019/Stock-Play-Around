@@ -95,24 +95,25 @@ export default class DisplayETF extends Component{
 
   render(){
     return(
+      <React.Fragment>
+        <table className="ui celled striped padded table">
+            <tbody>
+          {this.state.pickList.map(function(pick, idx){
+            return <ETFTable key={idx} idx={idx} pick={pick} />
+            })
+          }
 
-      <table className="ui celled striped padded table">
-          <tbody>
-        {this.state.pickList.map(function(pick, idx){
-          return <ETFTable key={idx} idx={idx} pick={pick} />
-          })
-        }
-
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Created on {this.getDate()}</td>
-            <td>{Math.round(this.state.score * 10000) / 100}%</td>
-          </tr>
-        </tbody>
-      </table>
-
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{Math.round(this.state.score * 10000) / 100}%</td>
+            </tr>
+          </tbody>
+        </table>
+        <label className="ui grey label">MeTF created on {this.getDate()}</label>
+      </React.Fragment>
 
     )
   }
