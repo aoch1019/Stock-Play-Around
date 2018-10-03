@@ -199,8 +199,10 @@ class App extends Component {
               render={ (renderProps) => {
                 return (
                   this.state.currUser === null ? "Please Log In" :
-                  <ViewEtfs currUser={this.state.currUser}
-                             allStocks={this.state.allStocks} />
+                  <ViewEtfs  userToDisplay={this.state.currUser}
+                             allStocks={this.state.allStocks}
+                             currUser={this.state.currUser}
+                            />
                          )
               }}
             />
@@ -208,10 +210,11 @@ class App extends Component {
                 exact path="/user-ETFs"
                 render={ (renderProps) => {
                   return (
-                    this.state.selectedUserToDisplayETFs === null ? "Loading" :
-                    <ViewEtfs currUser={this.state.selectedUserToDisplayETFs}
-                              allStocks={this.state.allStocks}
-                              />
+                      this.state.selectedUserToDisplayETFs === null ? "Loading" :
+                        <ViewEtfs userToDisplay={this.state.selectedUserToDisplayETFs}
+                                  allStocks={this.state.allStocks}
+                                  currUser={this.state.currUser}
+                                  />
                            )
                 }}
               />
