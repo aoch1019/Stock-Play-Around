@@ -53,7 +53,7 @@ class Leaderboard extends Component{
               </tr>
 
               {this.props.topETFs.map((etf, idx) => {
-                return < LeaderboardRow key={idx} etf={etf} place={idx+1} handleClick={this.handleClick} handleSelectedLeaderBoardUser={props.handleSelectedLeaderBoardUser />
+                return < LeaderboardRow key={idx} etf={etf} place={idx+1} handleClick={this.handleClick} handleSelectedLeaderBoardUser={this.props.handleSelectedLeaderBoardUser} />
               })}
 
             </tbody>
@@ -63,7 +63,7 @@ class Leaderboard extends Component{
 
           <React.Fragment>
             <DisplayETF etf={this.state.clickedETF} allStocks={this.props.allStocks} />
-            <button onClick={() => this.setState({ clickedETF: null })}>Return to Leaderboard</button>
+            <button className="ui button" onClick={() => this.setState({ clickedETF: null })}>Return to Leaderboard</button>
           </React.Fragment>
     )
   }

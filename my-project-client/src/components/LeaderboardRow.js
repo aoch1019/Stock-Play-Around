@@ -23,7 +23,7 @@ class LeaderboardRow extends React.Component {
                       {this.state.name}
                     </NavLink></td>
         <td>{this.props.etf.score}</td>
-        <td><button onClick={() => this.props.handleClick(this.props.etf)}>View ETF</button></td>
+        <td><button className="tiny ui button" onClick={() => this.props.handleClick(this.props.etf)}>View ETF</button></td>
       </tr>
     )
   }
