@@ -1,39 +1,72 @@
-import React from 'react';
+import React, { Component } from 'react';
 import LeaderboardRow from '../components/LeaderboardRow'
+import DisplayETF from '../components/DisplayETF'
 
-const Leaderboard = (props) => {
-  return (
-    <table className="ui celled striped padded table">
-          <tbody>
-            <tr>
-              <th>
-                <h3 className="ui center aligned header">
-                  Place
-                </h3>
-              </th>
-              <th>
-                <h3 className="ui center aligned header">
-                  Name
-                </h3>
-              </th>
-              <th>
-                <h3 className="ui center aligned header">
-                  Score
-                </h3>
-              </th>
-            </tr>
+class Leaderboard extends Component{
+  constructor(props){
+    super(props)
 
-            {props.topETFs.map(function(etf, idx){
-              return <LeaderboardRow  key={idx}
-                                      etf={etf}
-                                      place={idx+1}
-                                      handleSelectedLeaderBoardUser={props.handleSelectedLeaderBoardUser}
-                                      />
-            })}
+    this.state = {
+      clickedETF: null
+    }
 
-          </tbody>
-        </table>
-  )
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+
+  handleClick(etf){
+    this.setState({
+      clickedETF: etf
+    })
+  }
+
+  render(){
+    return (
+
+      this.state.clickedETF === null
+
+      ?
+
+      <table className="ui celled striped padded table">
+            <tbody>
+              <tr>
+                <th>
+                  <h3 className="ui center aligned header">
+                    Place
+                  </h3>
+                </th>
+                <th>
+                  <h3 className="ui center aligned header">
+                    Name
+                  </h3>
+                </th>
+                <th>
+                  <h3 className="ui center aligned header">
+                    Score
+                  </h3>
+                </th>
+                <th>
+                  <h3 className="ui center aligned header">
+                    View ETF
+                  </h3>
+                </th>
+              </tr>
+
+              {this.props.topETFs.map((etf, idx) => {
+                return < LeaderboardRow key={idx} etf={etf} place={idx+1} handleClick={this.handleClick} handleSelectedLeaderBoardUser={props.handleSelectedLeaderBoardUser />
+              })}
+
+            </tbody>
+          </table>
+
+          :
+
+          <React.Fragment>
+            <DisplayETF etf={this.state.clickedETF} allStocks={this.props.allStocks} />
+            <button onClick={() => this.setState({ clickedETF: null })}>Return to Leaderboard</button>
+          </React.Fragment>
+    )
+  }
 }
 
 export default Leaderboard

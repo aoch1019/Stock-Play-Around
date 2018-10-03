@@ -162,7 +162,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src='https://www.investmentweek.co.uk/w-images/788d48c0-a63c-4cce-8553-2bab367f1731/1/etfcards-580x358.jpg' className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to MeTF v0.1</h1>
+          <h1 className="App-title">Welcome to MeTF</h1>
         </header>
         <React.Fragment>
           <NavBar {...this.state} handleLogout={this.handleLogout} />
