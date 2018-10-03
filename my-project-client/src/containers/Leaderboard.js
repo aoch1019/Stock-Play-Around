@@ -53,7 +53,7 @@ class Leaderboard extends Component{
               </tr>
 
               {this.props.topETFs.map((etf, idx) => {
-                return < LeaderboardRow key={idx} etf={etf} place={idx+1} handleClick={this.handleClick} handleSelectedLeaderBoardUser={props.handleSelectedLeaderBoardUser />
+                return < LeaderboardRow key={idx} etf={etf} place={idx+1} handleClick={this.handleClick} handleSelectedLeaderBoardUser={this.props.handleSelectedLeaderBoardUser} />
               })}
 
             </tbody>
