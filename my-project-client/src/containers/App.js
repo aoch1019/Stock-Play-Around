@@ -21,7 +21,8 @@ class App extends Component {
       topETFs: [],
       currETF: null,
       currUser: null,
-      nameInput: ""
+      nameInput: "",
+      selectedUserToDisplayETFs: null
     }
 
     this.selectStock = this.selectStock.bind(this)
@@ -95,6 +96,17 @@ class App extends Component {
     this.setState({currUser: null})
   }
 
+  handleSelectedLeaderBoardUser = (event) => {
+    const selectedUser = event.target.text
+    fetch('http://localhost:3000/users')
+    .then(res => res.json())
+    .then(users => {
+      const foundUser = users.find((user) => user.name === selectedUser)
+
+      this.setState({selectedUserToDisplayETFs: foundUser})
+    })
+  }
+
   selectStock(stock){
     this.setState(prevState => ({
       selectedStocks: [...prevState.selectedStocks, stock]
@@ -159,7 +171,12 @@ class App extends Component {
             path="/Leaderboard"
             render={ (renderProps) => {
               return (
-                  <Leaderboard {...this.state}/>
+                  <React.Fragment>
+                    <h1>Leaderboard</h1>
+                    <Leaderboard  {...this.state}
+                                  handleSelectedLeaderBoardUser={this.handleSelectedLeaderBoardUser}
+                                  />
+                  </React.Fragment>
                 )
               }}
             />
@@ -182,20 +199,37 @@ class App extends Component {
               render={ (renderProps) => {
                 return (
                   this.state.currUser === null ? "Please Log In" :
-                  <ViewEtfs currUser={this.state.currUser}
-                             allStocks={this.state.allStocks} />
+                  <ViewEtfs  userToDisplay={this.state.currUser}
+                             allStocks={this.state.allStocks}
+                             currUser={this.state.currUser}
+                            />
                          )
               }}
             />
+            <Route
+                exact path="/user-ETFs"
+                render={ (renderProps) => {
+                  return (
+                      this.state.selectedUserToDisplayETFs === null ? "Loading" :
+                        <ViewEtfs userToDisplay={this.state.selectedUserToDisplayETFs}
+                                  allStocks={this.state.allStocks}
+                                  currUser={this.state.currUser}
+                                  />
+                           )
+                }}
+              />
           <Route
             exact
             path="/Login"
             render={ (renderProps) => {
               return (
-                <Login  handleNameInput={this.handleNameInput}
-                        handleLoginSubmit={this.handleLoginSubmit}
-                        nameInput={this.state.nameInput}
-                        />
+                <React.Fragment>
+                  <h3>Please login</h3>
+                  <Login  handleNameInput={this.handleNameInput}
+                          handleLoginSubmit={this.handleLoginSubmit}
+                          nameInput={this.state.nameInput}
+                          />
+                </React.Fragment>
                     )
               }}
             />
@@ -204,10 +238,13 @@ class App extends Component {
             path="/Signup"
             render={ (renderProps) => {
               return (
-                <Signup handleNameInput={this.handleNameInput}
-                        handleSignupSubmit={this.handleSignupSubmit}
-                        nameInput={this.state.nameInput}
-                        />
+                <React.Fragment>
+                  <h3>Signup to create your own ETFs and score on the leaderboard.</h3>
+                  <Signup handleNameInput={this.handleNameInput}
+                          handleSignupSubmit={this.handleSignupSubmit}
+                          nameInput={this.state.nameInput}
+                          />
+                </React.Fragment>
                     )
               }}
             />
