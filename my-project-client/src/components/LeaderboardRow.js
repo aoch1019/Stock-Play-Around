@@ -18,6 +18,7 @@ class LeaderboardRow extends React.Component {
         <td>{this.props.place}</td>
         <td>{this.state.name}</td>
         <td>{this.props.etf.score}</td>
+        <td><button onClick={() => this.props.handleClick(this.props.etf)}>View ETF</button></td>
       </tr>
     )
   }
