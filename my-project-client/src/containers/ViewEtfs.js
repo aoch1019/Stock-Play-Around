@@ -30,6 +30,10 @@ export default class ViewEtfs extends Component{
     })
   }
 
+  getHeader(){
+    return this.props.userToDisplay.name + `'s ETFs`
+  }
+
   // changeState(etf, userID){
   //   if(etf.user_id === userID){
   //     this.setState({
@@ -41,8 +45,8 @@ export default class ViewEtfs extends Component{
   render(){
     return(
         <div>
-          <h2>{this.props.userToDisplay.name}'s ETFs</h2>
-          { this.props.currUser !== this.props.userToDisplay && <NavLink to="/Leaderboard" className="ui button">Return to Leaderboard</NavLink> }
+          <h2>{this.getHeader()}</h2>
+          {this.props.currUser !== this.props.userToDisplay && <NavLink to="/Leaderboard" className="ui button">Return to Leaderboard</NavLink> }
           {this.state.etfList.map((etf, idx) => <DisplayETF key={idx} etf={etf} allStocks={this.props.allStocks} />)}
         </div>
     )

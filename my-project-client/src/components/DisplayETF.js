@@ -65,6 +65,13 @@ export default class DisplayETF extends Component{
       })
     })
   }
+
+  getDate(){
+    let date = this.props.etf.created_at
+    let dateArr = date.split("-")
+    let newDateArr = [dateArr[0], dateArr[1], ...dateArr[2].split("T")]
+    return `${newDateArr[1]}-${newDateArr[2]}-${newDateArr[0]}`
+  }
         // fetch(`http://localhost:3000/stocks/${pick.stock_id}`).then(res => res.json()).then(stock => {
         // let info = {...pick, name: stock.name, symbol: stock.symbol}
         // console.log(this.props.allStocks)
@@ -100,7 +107,7 @@ export default class DisplayETF extends Component{
             <td></td>
             <td></td>
             <td></td>
-            <td></td>
+            <td>Created on {this.getDate()}</td>
             <td>{Math.round(this.state.score * 10000) / 100}%</td>
           </tr>
         </tbody>
