@@ -164,8 +164,8 @@ class App extends Component {
           <img src='https://www.investmentweek.co.uk/w-images/788d48c0-a63c-4cce-8553-2bab367f1731/1/etfcards-580x358.jpg' className="App-logo" alt="logo" />
           <h1 className="ui white inverted header">Welcome to MeTF</h1>
         </header>
-        <React.Fragment>
-          <NavBar {...this.state} handleLogout={this.handleLogout} />
+        <NavBar {...this.state} handleLogout={this.handleLogout} />
+        <div className="App-body">
           <Route
             exact
             path="/Leaderboard"
@@ -272,7 +272,7 @@ class App extends Component {
                         )
                   }}
                 />
-        </React.Fragment>
+            </div>
       </div>
     );
   }
